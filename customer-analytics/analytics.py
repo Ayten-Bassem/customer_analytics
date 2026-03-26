@@ -1,8 +1,18 @@
+
 import pandas as pd
 import sys
 import os
 
-data_path = sys.argv[1]
+
+# Use default file if no argument is provided, with robust path handling
+script_dir = os.path.dirname(os.path.abspath(__file__))
+if len(sys.argv) < 2:
+    data_path = os.path.join(script_dir, "data_preprocessed.csv")
+    print(f"No data path provided. Using default: {data_path}")
+else:
+    data_path = sys.argv[1]
+    if not os.path.isabs(data_path):
+        data_path = os.path.join(script_dir, data_path)
 
 df = pd.read_csv(data_path)
 
@@ -39,4 +49,5 @@ with open("insight3.txt", "w") as f:
     f.write(insight3)
 
 
-os.system(f"python visualize.py {data_path}")
+visualize_path = os.path.join(script_dir, "visualize.py")
+os.system(f'"{sys.executable}" "{visualize_path}" "{data_path}"')

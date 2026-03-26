@@ -1,0 +1,1 @@
+The most frequent value in rating_category is Medium.

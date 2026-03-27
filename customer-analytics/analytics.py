@@ -49,5 +49,12 @@ with open("insight3.txt", "w") as f:
     f.write(insight3)
 
 
+import subprocess
+
 visualize_path = os.path.join(script_dir, "visualize.py")
-os.system(f'"{sys.executable}" "{visualize_path}" "{data_path}"')
+
+subprocess.run([
+    sys.executable,
+    visualize_path,
+    data_path
+])

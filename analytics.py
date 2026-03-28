@@ -29,8 +29,8 @@ if len(numeric_cols) > 0:
 else:
     insight2 = "No numeric columns were found in the dataset."
 
-#categorical column insight
-cat_cols = df.select_dtypes(include=['object']).columns
+# categorical column insight
+cat_cols = df.select_dtypes(include=['object', 'string']).columns
 
 if len(cat_cols) > 0:
     col = cat_cols[0]

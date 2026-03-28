@@ -1,3 +1,0 @@
-Cluster 0: 40456 samples
-Cluster 1: 215 samples
-Cluster 2: 6 samples

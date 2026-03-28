@@ -35,6 +35,9 @@ Why cleanup?
 From the repository root (the folder that contains `customer-analytics/`):
 - `./customer-analytics/summary.sh`
 
+By default, `summary.sh` uses `customer-analytics/results/data_raw.csv` as the input dataset. If your raw dataset is stored elsewhere, pass it as an argument:
+- `./customer-analytics/summary.sh /path/to/data_raw.csv`
+
 This will:
 - Build the Docker image
 - Run the full pipeline inside a container

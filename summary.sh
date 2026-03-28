@@ -6,6 +6,15 @@ CONTAINER_NAME="customer-analytics-pipeline"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RESULTS_DIR="${SCRIPT_DIR}/results"
+RAW_DATA_HOST="${1:-${SCRIPT_DIR}/results/data_raw.csv}"
+RAW_DATA_NAME="$(basename "${RAW_DATA_HOST}")"
+RAW_DATA_CONTAINER="/app/pipeline/${RAW_DATA_NAME}"
+
+if [ ! -f "${RAW_DATA_HOST}" ]; then
+  echo "Raw data file not found: ${RAW_DATA_HOST}"
+  echo "Provide a raw dataset file at results/data_raw.csv or pass a path to summary.sh."
+  exit 1
+fi
 
 mkdir -p "${RESULTS_DIR}"
 
@@ -24,8 +33,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo "[4/5] Running pipeline inside container"
-docker exec "${CONTAINER_NAME}" python /app/pipeline/ingest.py /app/pipeline/results/data_raw.csv
+echo "[4/5] Copying raw data into container"
+docker cp "${RAW_DATA_HOST}" "${CONTAINER_NAME}:${RAW_DATA_CONTAINER}"
+
+echo "[5/5] Running pipeline inside container"
+docker exec "${CONTAINER_NAME}" python /app/pipeline/ingest.py "${RAW_DATA_CONTAINER}"
 
 echo "Copying outputs to: ${RESULTS_DIR}"
 OUTPUTS=(
